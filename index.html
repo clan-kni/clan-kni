@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>clan_KNI · Comunidad Roblox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --rose-dark: #b5006e;
+    --rose-bright: #ff3ea5;
+    --gold: #c9a84c;
+    --white: #f5f5f5;
+    --glass: rgba(255,255,255,0.05);
+    --glass-border: rgba(255,62,165,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 60px;
+    background: rgba(10,10,10,0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,62,165,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 0.9rem;
+    color: var(--white);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--rose-bright); }
+
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 0.75rem;
+    color: rgba(245,245,245,0.75);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--rose-bright); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0a0a0a 0%, #3d0024 45%, #b5006e 72%, #0a0a0a 100%);
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 15% 50%, rgba(181,0,110,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,62,165,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Particle dots */
+  #hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,62,165,0.35) 1px, transparent 1px),
+      radial-gradient(circle, rgba(201,168,76,0.20) 1px, transparent 1px);
+    background-size: 60px 60px, 120px 120px;
+    background-position: 0 0, 30px 30px;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 0 6vw;
+    max-width: 600px;
+    animation: fadeInDown 0.9s ease both;
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-35px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    color: var(--white);
+    text-shadow:
+      0 0 30px rgba(255,62,165,0.7),
+      0 0 80px rgba(255,62,165,0.3),
+      0 2px 4px rgba(0,0,0,0.8);
+    letter-spacing: 0.08em;
+  }
+
+  .hero-sub {
+    margin-top: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    opacity: 0.9;
+    animation: fadeInDown 0.9s 0.25s ease both;
+  }
+
+  .dragon-img {
+    position: absolute;
+    right: 2vw;
+    top: 50%;
+    transform: translateY(-50%);
+    height: min(85vh, 700px);
+    min-height: 400px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.85;
+    z-index: 5;
+    filter: drop-shadow(0 0 40px rgba(255,62,165,0.4));
+    animation: floatDragon 6s ease-in-out infinite;
+  }
+
+  @keyframes floatDragon {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50%       { transform: translateY(calc(-50% - 12px)) translateX(-6px); }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .section-animate {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .section-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SECTIONS SHARED ── */
+  section {
+    padding: 6rem 6vw;
+    position: relative;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.06em;
+  }
+
+  .title-line {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rose-bright), var(--rose-dark));
+    margin: 0.6rem auto 2.5rem;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(255,62,165,0.6);
+  }
+
+  /* ── QUIÉNES ── */
+  #quienes {
+    background: linear-gradient(180deg, #0a0a0a 0%, #120009 100%);
+    text-align: center;
+  }
+
+  .quienes-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .quienes-text {
+    max-width: 700px;
+    font-size: 1.2rem;
+    line-height: 1.9;
+    color: rgba(245,245,245,0.85);
+    font-weight: 300;
+  }
+
+  .clan-logo-img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 2px solid var(--glass-border);
+    background: var(--glass);
+    padding: 12px;
+    box-shadow: 0 0 30px rgba(255,62,165,0.2);
+  }
+
+  /* ── DÓNDE ── */
+  #donde {
+    background: linear-gradient(180deg, #120009 0%, #1a000e 100%);
+  }
+
+  .donde-card {
+    max-width: 520px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: 0 0 40px rgba(181,0,110,0.08);
+  }
+
+  .donde-card img { width: 52px; height: 52px; object-fit: contain; }
+
+  .donde-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(245,245,245,0.8);
+  }
+
+  .btn-cta {
+    display: inline-block;
+    padding: 0.8rem 2.2rem;
+    background: linear-gradient(135deg, var(--rose-bright), var(--rose-dark));
+    color: var(--white);
+    font-family: 'Bebas Neue', cursive;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255,62,165,0.35);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .btn-cta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 28px rgba(255,62,165,0.55);
+  }
+
+  /* ── CAMISAS ── */
+  #camisas {
+    background: linear-gradient(180deg, #1a000e 0%, #0a0a0a 100%);
+    text-align: center;
+  }
+
+  .shirts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .shirt-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,62,165,0.18);
+    border-radius: 12px;
+    padding: 1.5rem 1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .shirt-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 24px rgba(255,62,165,0.35);
+    border-color: rgba(255,62,165,0.5);
+  }
+
+  .shirt-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .shirt-name {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 0.85rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  .shirt-variant {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  /* ── ÚNETE ── */
+  #unete {
+    position: relative;
+    text-align: center;
+    background: linear-gradient(180deg, #0a0a0a 0%, #110008 100%);
+    overflow: hidden;
+  }
+
+  #unete::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 70% at 50% 60%, rgba(181,0,110,0.16) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .unete-text {
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: rgba(245,245,245,0.8);
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-cta-lg {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    background: linear-gradient(135deg, var(--rose-bright), var(--rose-dark));
+    color: var(--white);
+    font-family: 'Bebas Neue', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border-radius: 999px;
+    box-shadow: 0 4px 24px rgba(255,62,165,0.4);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .btn-cta-lg:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 36px rgba(255,62,165,0.6);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #000;
+    padding: 2.2rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255,62,165,0.3);
+    box-shadow: 0 -1px 20px rgba(255,62,165,0.1);
+  }
+
+  footer p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(245,245,245,0.45);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .shirts-grid { grid-template-columns: repeat(2, 1fr); }
+    .dragon-img { height: min(55vh, 480px); opacity: 0.55; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: 0.62rem; }
+    .hero-content { padding: 0 4vw; }
+    section { padding: 4rem 5vw; }
+    .shirts-grid { grid-template-columns: 1fr; max-width: 340px; }
+    .dragon-img { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <a href="#hero" class="nav-logo">clan<span>_KNI</span></a>
+  <ul class="nav-links">
+    <li><a href="#hero">Inicio</a></li>
+    <li><a href="#quienes">¿Qué somos?</a></li>
+    <li><a href="#donde">¿Por dónde?</a></li>
+    <li><a href="#camisas">Camisas</a></li>
+    <li><a href="#unete">Únete</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <img src="images/dragon_banner.png" alt="Dragón japonés" class="dragon-img">
+  <div class="hero-content">
+    <h1 class="hero-title">clan_KNI</h1>
+    <p class="hero-sub">Comunidad Roblox &middot; Est. 2024</p>
+  </div>
+</section>
+
+<!-- ── QUIÉNES SOMOS ── -->
+<section id="quienes" class="section-animate">
+  <h2 class="section-title">¿Qué somos?</h2>
+  <div class="title-line"></div>
+  <div class="quienes-inner">
+    <img src="images/clan_logo.png" alt="Logo del clan" class="clan-logo-img">
+    <p class="quienes-text">
+      clan_KNI es una comunidad dentro de Roblox nacida para algo más que jugar:
+      buscamos la convivencia real, hacer amistades genuinas y crear un espacio
+      donde todos sean bienvenidos. Aquí no importa tu nivel &mdash; importa tu actitud.
+      Somos un clan unido por el respeto, la diversión y las ganas de crecer juntos.
+    </p>
+  </div>
+</section>
+
+<!-- ── DÓNDE ── -->
+<section id="donde" class="section-animate">
+  <h2 class="section-title">¿Por dónde nos encontramos?</h2>
+  <div class="title-line"></div>
+  <div class="donde-card">
+    <img src="images/whatsapp_icon.png" alt="WhatsApp">
+    <p class="donde-text">Toda nuestra coordinación, avisos y convivencia sucede vía WhatsApp.</p>
+    <a href="https://chat.whatsapp.com/I4OZh9fXzCDAzAdabxk0Vi" class="btn-cta">Unirse al grupo →</a>
+  </div>
+</section>
+
+<!-- ── CAMISAS ── -->
+<section id="camisas" class="section-animate">
+  <h2 class="section-title">Camisas del Clan</h2>
+  <div class="title-line"></div>
+  <p style="max-width:600px;margin:0 auto 2.5rem;font-size:1.1rem;color:rgba(245,245,245,0.7);line-height:1.7;">
+    Viste los colores de clan_KNI en Roblox. Estas son las camisas oficiales disponibles para miembros.
+  </p>
+  <div class="shirts-grid">
+    <div class="shirt-card">
+      <img src="images/camisa_01.png" alt="Camisa KNI Clásica">
+      <span class="shirt-name">KNI Clásica</span>
+      <span class="shirt-variant">Negra · Oficial</span>
+    </div>
+    <div class="shirt-card">
+      <img src="images/camisa_02.png" alt="Camisa KNI Rosa">
+      <span class="shirt-name">KNI Rosa</span>
+      <span class="shirt-variant">Rosa · Edición especial</span>
+    </div>
+    <div class="shirt-card">
+      <img src="images/camisa_03.png" alt="Camisa KNI Dragon">
+      <span class="shirt-name">KNI Dragon</span>
+      <span class="shirt-variant">Negra · Dragón dorado</span>
+    </div>
+    <div class="shirt-card">
+      <img src="images/camisa_04.png" alt="Camisa KNI Casual">
+      <span class="shirt-name">KNI Casual</span>
+      <span class="shirt-variant">Blanca · Estilo libre</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── ÚNETE ── -->
+<section id="unete" class="section-animate">
+  <h2 class="section-title">¿Quieres unirte?</h2>
+  <div class="title-line"></div>
+  <p class="unete-text">
+    Si buscas un lugar donde ser tú mismo, hacer amigos de verdad y disfrutar Roblox
+    al máximo, clan_KNI es tu hogar. Las puertas están abiertas para quienes llegan
+    con buena vibra y ganas de pertenecer a algo especial.
+  </p>
+  <a href="#" class="btn-cta-lg">Contáctanos por WhatsApp</a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2024 clan_KNI &nbsp;·&nbsp; Comunidad Roblox &nbsp;·&nbsp; Hecho con 💗</p>
+</footer>
+
+<script>
+  // Scroll reveal via Intersection Observer
+  const animEls = document.querySelectorAll('.section-animate');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  animEls.forEach(el => observer.observe(el));
+</script>
+
+<!--
+========================================
+INSTRUCCIONES DE IMÁGENES - clan_KNI
+========================================
+
+Crea una carpeta llamada "images" en el mismo directorio que este archivo HTML.
+Coloca dentro las siguientes imágenes con exactamente estos nombres de archivo:
+
+1. dragon_banner.png
+   → Imagen de un dragón japonés (estilo ukiyo-e o ilustración oriental).
+     Fondo transparente (PNG). Orientación vertical preferida.
+     Tamaño recomendado: 600x900px o similar.
+     Fuente sugerida: Freepik, Pinterest o generada con IA (Bing Image Creator, Adobe Firefly).
+
+2. clan_logo.png
+   → Logo del clan clan_KNI. Puede ser un símbolo, iniciales o ícono.
+     Fondo transparente (PNG). Tamaño recomendado: 400x400px.
+
+3. whatsapp_icon.png
+   → Ícono oficial de WhatsApp en verde.
+     Descárgalo de: https://www.whatsapp.com/about/ o usa un SVG libre de derechos.
+     Tamaño: 48x48px mínimo, fondo transparente.
+
+4. camisa_01.png  →  Camisa "KNI Clásica" (negra, diseño oficial del clan)
+5. camisa_02.png  →  Camisa "KNI Rosa" (rosa, edición especial)
+6. camisa_03.png  →  Camisa "KNI Dragon" (negra con dragón dorado)
+7. camisa_04.png  →  Camisa "KNI Casual" (blanca, estilo libre)
+
+   Para las camisas: toma capturas de pantalla desde el catálogo de Roblox
+   o desde el editor de camisas. Recorta el fondo blanco con remove.bg (gratis).
+   Tamaño recomendado: 400x400px, fondo transparente (PNG).
+
+RESUMEN DE ARCHIVOS A COLOCAR EN /images/:
+  dragon_banner.png
+  clan_logo.png
+  whatsapp_icon.png
+  camisa_01.png
+  camisa_02.png
+  camisa_03.png
+  camisa_04.png
+
+========================================
+-->
+
+</body>
+</html>
